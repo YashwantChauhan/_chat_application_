@@ -1,7 +1,7 @@
 'use strict';
 
 const SESSION_SECRET = 'yashwant';
-
+require('dotenv').config({ path: 'sample' })
 const pug  = require('pug')
 const express = require('express');
 const myDB = require('./connection');
@@ -31,9 +31,9 @@ app.route('/').get((req, res) => {
   res.render('pug/index', {
     'title' : 'Hello', 
     'message' : 'Please login'
-  });
-});
-
+  })
+})
+console.log(process.env.NODE_ENV)
 const PORT = 5000 || process.env.PORT
 app.listen(PORT, () => {
   console.log('Listening on port ' + PORT);
