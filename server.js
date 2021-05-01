@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 const pug  = require('pug')
 const express = require('express');
 const myDB = require('./connection');
