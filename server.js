@@ -35,8 +35,14 @@ myDB( async client=>{
 
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
-  app.route('/login').post(passport.authenticate('local',{ failureRedirect: '/' }), function(req,res){
+
+
+  app.route('/profile').get(ensureAuthenticated, (req,res)=>{
     res.render('pug/profile');
+  })
+  
+  app.route('/login').post(passport.authenticate('local',{ failureRedirect: '/' }), function(req,res){
+    res.redirect('/profile');
   })
     
   app.route('/').get((req,res)=>{
@@ -76,6 +82,18 @@ myDB( async client=>{
       res.render('pug', { title: e, message: 'Unable to login' });
     })
 })
+
+
+function ensureAuthenticated(req,res,next){
+
+  if( req.isAuthenticated() ){
+   return next();
+  }
+  else{
+    res.redirect('/')
+  }
+  
+}
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
