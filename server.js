@@ -35,6 +35,10 @@ myDB( async client=>{
 
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
+  app.route('/login').post(passport.authenticate('local',{ failureRedirect: '/' }), function(req,res){
+    res.render('pug/profile');
+  })
+    
   app.route('/').get((req,res)=>{
     res.render('pug', {
       title: 'Connected to Database',
@@ -65,10 +69,7 @@ myDB( async client=>{
   }
 ));
 
-app.post('/login', passport.authenticate('local',{ failureRedirect : '/' }), function(req,res){
-  res.render('pug/profile');
-})
-    
+
 
 }).catch(e=>{
     app.route('/').get((req,res)=>{
