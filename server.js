@@ -38,7 +38,8 @@ myDB( async client=>{
   app.route('/').get((req,res)=>{
     res.render('pug', {
       title: 'Connected to Database',
-      message: 'Please login'
+      message: 'Please login',
+      showLogin: true
     })
   })
 
@@ -63,6 +64,10 @@ myDB( async client=>{
     });
   }
 ));
+
+app.post('/login', passport.authenticate('local',{ failureRedirect : '/' }), function(req,res){
+  res.render('pug/profile');
+})
     
 
 }).catch(e=>{
