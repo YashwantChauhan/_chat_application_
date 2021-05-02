@@ -35,7 +35,10 @@ passport.serializeUser((user,done)=>{
 })
 
 passport.deserializeUser((id,done)=>{
-  done(null,null);
+  //myDB.findOne({ _id : new ObjectID(id) }, (err,doc)=>{
+    done(null,null);
+  //})
+  
 })
 
 //-----------------------------------------------------------------------------------------------------------------------------
