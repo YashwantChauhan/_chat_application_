@@ -38,9 +38,11 @@ myDB( async client=>{
 
 
   app.route('/profile').get(ensureAuthenticated, (req,res)=>{
-    res.render('pug/profile');
+    res.render('pug/profile', {
+      username : req.user.username
+    });
   })
-  
+
   app.route('/login').post(passport.authenticate('local',{ failureRedirect: '/' }), function(req,res){
     res.redirect('/profile');
   })
