@@ -36,6 +36,10 @@ myDB( async client=>{
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
 
+  app.route('/logout').get((req,res)=>{
+    req.logOut()
+    res.redirect('/')
+  })
 
   app.route('/profile').get(ensureAuthenticated, (req,res)=>{
     res.render('pug/profile', {
@@ -53,6 +57,11 @@ myDB( async client=>{
       message: 'Please login',
       showLogin: true
     })
+  })
+
+  
+  app.use((req,res,next)=>{
+    res.status(404).type('text').send('Not Found')
   })
 
   passport.serializeUser((user,done)=>{
@@ -79,11 +88,14 @@ myDB( async client=>{
 
 
 
+
+
 }).catch(e=>{
     app.route('/').get((req,res)=>{
       res.render('pug', { title: e, message: 'Unable to login' });
     })
 })
+
 
 
 function ensureAuthenticated(req,res,next){
@@ -96,6 +108,7 @@ function ensureAuthenticated(req,res,next){
   }
   
 }
+
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
