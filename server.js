@@ -35,6 +35,30 @@ myDB( async client=>{
 
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
+  app.route('/register').post((req,res,next)=>{
+    myDataBase.findOne({ username : req.body.username }, (err,user)=>{
+      if(err) next(err);
+      else if( user ){
+        res.redirect('/');
+      }
+      else{
+        myDataBase.insertOne({
+          username: req.body.username,
+          password: req.body.password 
+        }, (err,doc)=>{
+          if(err) {
+            res.redirect('/')
+          }
+          else{
+            next(null,doc.ops[0])
+          }
+        })
+      }
+    })
+  }, passport.authenticate('local', { failureRedirect : '/' }), (req,res)=>{
+     res.redirect('/profile'); 
+  }
+  );
 
   app.route('/logout').get((req,res)=>{
     req.logOut()
@@ -43,7 +67,7 @@ myDB( async client=>{
 
   app.route('/profile').get(ensureAuthenticated, (req,res)=>{
     res.render('pug/profile', {
-      username : req.user.username
+      username: req.user.username
     });
   })
 
@@ -55,7 +79,8 @@ myDB( async client=>{
     res.render('pug', {
       title: 'Connected to Database',
       message: 'Please login',
-      showLogin: true
+      showLogin: true,
+      showRegistration: true
     })
   })
 
