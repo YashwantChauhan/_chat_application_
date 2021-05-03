@@ -11,6 +11,8 @@ const passport = require('passport')
 const routes = require('./routes')
 const auth = require('./auth');
 
+let curretUsers = 0;
+
 
 
 const app = express();
@@ -41,9 +43,16 @@ myDB( async client=>{
 
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
+ 
   io.on('connection', socket=>{
     console.log('A user has connected')
+    currentUsers++;
+    io.emit('user count', currentUsers);
   });
+
+  socket.on('user count', function(data){
+    console.log(data);
+  })
 
   routes(app,myDataBase);
   auth(app,myDataBase);
