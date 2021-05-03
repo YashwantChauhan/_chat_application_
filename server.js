@@ -11,7 +11,6 @@ const passport = require('passport')
 const routes = require('./routes')
 const auth = require('./auth');
 
-let currentUsers = 0;
 
 
 
@@ -44,6 +43,8 @@ myDB( async client=>{
   const myDataBase = await client.db('myFirstDatabase').collection('users');
 
  
+  let currentUsers = 0;
+
   io.on('connection', socket=>{
     console.log('A user has connected')
     currentUsers++;
