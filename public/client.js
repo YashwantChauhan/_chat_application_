@@ -2,6 +2,11 @@ let socket = io();
 
 socket.on('user count', function(data){
   console.log(data);
+  socket.on('disconnect',()=>{
+    console.log('A user has disconnected');
+    --data;
+    socket.emit('user count',data);
+  })
 })
 
 $(document).ready(function () {
