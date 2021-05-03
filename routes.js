@@ -50,9 +50,16 @@ module.exports = function (app, myDataBase) {
         })
     })
 
+    app.route('/chat').get(ensureAuthenticated,(req,res)=>{
+        res.render('pug/chat',{
+            user: req.user
+        })
+    })
+
     app.route('/auth/github').get(passport.authenticate('github'));
     app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-        res.redirect('/profile')
+        req.session.user_id = req.user.id,
+        res.redirect('/chat')
     })
 
     
