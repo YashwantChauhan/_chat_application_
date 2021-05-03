@@ -18,7 +18,6 @@ const app = express();
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http)
-let socket = io();
 
 app.set('view engine', 'pug');
 
@@ -53,13 +52,16 @@ myDB( async client=>{
     console.log('A user has connected')
     currentUsers++;
     io.emit('user count', currentUsers);
+
+    socket.on('disconnect',()=>{
+      console.log('A user has disconnected');
+      --currentUsers;
+      socket.emit('user count',currentUsers);
+    })
+    
   });
 
-  socket.on('disconnect',()=>{
-    console.log('A user has disconnected');
-    --currentUsers;
-    socket.emit('user count',currentUsers);
-  })
+  
 
  
 }).catch(e=>{
