@@ -50,7 +50,7 @@ module.exports = function(app,myDataBase){
   passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'https://chatapplication.yashwantchauhan.repl.co/auth/github/callback'
+    callbackURL: 'https://chatapplication-2.yashwantchauhan.repl.co/auth/github/callback'
   },
     function (accessToken, refreshToken, profile, cb) {
       myDataBase.findOneAndUpdate({
@@ -59,8 +59,8 @@ module.exports = function(app,myDataBase){
         $setOnInsert: {
           id: profile.id,
           name: profile.displayName|| 'John Doe',
-          photo: profile.photo[0].value || '',
-          email: Array.isArray(pofile.emails)? profile.emails[0].value: 'No public email',
+          photo: profile.photos[0].value || '',
+          email: Array.isArray(profile.emails)? profile.emails[0].value: 'No public email',
           created_on: new Date(),
           provider: profile.provider || ''
         }, 
