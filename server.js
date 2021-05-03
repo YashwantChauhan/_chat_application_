@@ -51,7 +51,11 @@ myDB( async client=>{
     io.emit('user count', currentUsers);
   });
 
-  
+  socket.on('disconnect',()=>{
+    console.log('A user has disconnected');
+    --currentUsers;
+    socket.emit('user count',currentUsers);
+  })
 
   routes(app,myDataBase);
   auth(app,myDataBase);
