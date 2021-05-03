@@ -11,7 +11,7 @@ const passport = require('passport')
 const routes = require('./routes')
 const auth = require('./auth');
 
-let curretUsers = 0;
+let currentUsers = 0;
 
 
 
@@ -50,9 +50,7 @@ myDB( async client=>{
     io.emit('user count', currentUsers);
   });
 
-  socket.on('user count', function(data){
-    console.log(data);
-  })
+  
 
   routes(app,myDataBase);
   auth(app,myDataBase);
