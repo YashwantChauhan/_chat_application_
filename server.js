@@ -1,25 +1,21 @@
 'use strict';
 
-
-const pug  = require('pug')
 const express = require('express');
 const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
-const session = require('express-session')
-const passport = require('passport')
-const routes = require('./routes')
-const auth = require('./auth');
+const session = require('express-session');
+const passport = require('passport');
+const routes = require('./routes');
+const auth = require('./auth.js');
 
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http)
-
-
-const passportSocketIo = require('passport.socketio')
-const cookieParser = require('cookie-parser')
-const MongoStore = require('connect-mongo');
+const io = require('socket.io')(http);
+const passportSocketIo = require('passport.socketio');
+const cookieParser = require('cookie-parser');
+const MongoStore = require('connect-mongo')(session);
 const URI = process.env.MONGO_URI;
-const store = new MongoStore({ url: URI })
+const store = new MongoStore({ url: URI });
 
 
 app.set('view engine', 'pug');
