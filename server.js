@@ -12,6 +12,9 @@ const routes = require('./routes')
 
 const passportSocketIo = require('passport.socketio')
 const cookieParser = require('cookie-parser')
+const MongoStore = require('connect-mongo')(session);
+const URI = process.env.MONGO_URI;
+const store = new MongoStore({ url: URI })
 
 const auth = require('./auth');
 
@@ -32,16 +35,26 @@ app.use( session({
   resave: true,
   store: store,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
+  key: 'express.sid',
+  store: store
 }));
 
-const MongoStore = require('connect-mongo')(session);
-const URI = process.env.MONGO_URI;
-const store = new MongoStore({ url : URI })
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+io.use( 
+  passportSocketIo.authorize({
+    cookieParser: cookieParser,
+    key: 'express.sid',
+    secret: process.env.SESSION_SECRET,
+    store: store,
+    success: onAuthorizeSuccess,
+    fail: onAuthorizeFail
+  })
+)
 //-----------------------------------------------------------------------------------------------------------------------------
 
 myDB( async client=>{
@@ -52,16 +65,7 @@ myDB( async client=>{
   auth(app,myDataBase);
 
  
-  io.use( 
-    passportSocketIo.authorize({
-      cookieParser: cookieParser,
-      key: 'express.sid',
-      secret: process.env.SESSION_SECRET,
-      store: store,
-      success: onAuthorizeSuccess,
-      fail: onAuthorizeFail
-    })
-  )
+  
   let currentUsers = 0;
 
   io.on('connection', socket=>{
