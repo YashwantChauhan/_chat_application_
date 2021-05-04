@@ -73,6 +73,11 @@ myDB( async client=>{
       connected: true
     });
 
+    io.on('chat message',(data)=>{
+      io.emit('chat message',data);
+    });
+  
+
     socket.on('disconnect',()=>{
       console.log('A user has disconnected');
       --currentUsers;
@@ -85,10 +90,7 @@ myDB( async client=>{
     
   });
 
-  io.on('chat message',(data)=>{
-    io.emit('chat message',data);
-  });
-
+  
   
 
  
