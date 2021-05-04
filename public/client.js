@@ -9,7 +9,7 @@ socket.on('user',  (data)=>{
 })
 socket.on('chat message',  (data)=>{
   
-  let message = data.name + ': ' + data.messageToSend;
+  let message = data.name + ': ' + data.message;
   $('#messages').append($('<li>').html('<b>' + message + '</b>'));
 
 })

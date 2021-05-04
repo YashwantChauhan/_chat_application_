@@ -77,7 +77,7 @@ myDB( async client=>{
       console.log(data);
       io.emit('chat message',{
         name: socket.request.user.name,
-        messageToSend: data
+        message: data
       });
     });
   
