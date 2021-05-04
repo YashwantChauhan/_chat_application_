@@ -85,6 +85,10 @@ myDB( async client=>{
     
   });
 
+  io.on('chat message',(data)=>{
+    io.emit('chat message',data);
+  });
+
   
 
  
