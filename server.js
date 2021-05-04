@@ -7,8 +7,13 @@ const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session')
 const passport = require('passport')
-
 const routes = require('./routes')
+const auth = require('./auth');
+
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http)
+
 
 const passportSocketIo = require('passport.socketio')
 const cookieParser = require('cookie-parser')
@@ -16,12 +21,6 @@ const MongoStore = require('connect-mongo')(session);
 const URI = process.env.MONGO_URI;
 const store = new MongoStore({ url: URI })
 
-const auth = require('./auth');
-
-const app = express();
-
-const http = require('http').createServer(app);
-const io = require('socket.io')(http)
 
 app.set('view engine', 'pug');
 
