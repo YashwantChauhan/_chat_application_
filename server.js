@@ -73,7 +73,7 @@ myDB( async client=>{
       connected: true
     });
 
-    io.on('chat message',(data)=>{
+    socket.on('chat message',(data)=>{
       io.emit('chat message',data);
     });
   
